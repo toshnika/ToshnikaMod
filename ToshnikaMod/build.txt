@@ -1,0 +1,3 @@
+displayName = Toshnika's Random Content
+author = Toshnika
+version = 0.1

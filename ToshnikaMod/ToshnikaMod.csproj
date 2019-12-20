@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project Sdk="Microsoft.NET.Sdk">
+  <Import Project="..\..\references\tModLoader.targets" />
+  <PropertyGroup>
+    <AssemblyName>ToshnikaMod</AssemblyName>
+    <TargetFramework>net45</TargetFramework>
+    <PlatformTarget>x86</PlatformTarget>
+    <LangVersion>latest</LangVersion>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Net" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Blocks\" />
+    <Folder Include="NPCs\" />
+    <Folder Include="Items\Blocks\" />
+    <Folder Include="Items\Materials\" />
+    <Folder Include="NPCs\PrismCave\" />
+    <Folder Include="Items\Weapons\" />
+    <Folder Include="Items\Weapons\Ammo\" />
+    <Folder Include="Projectiles\" />
+    <Folder Include="Items\Weapons\Melee\" />
+    <Folder Include="Items\Weapons\Magic\" />
+  </ItemGroup>
+  <Target Name="BuildMod" AfterTargets="Build">
+    <Exec Command="&quot;$(tMLBuildServerPath)&quot; -build $(ProjectDir) -eac $(TargetPath) -define $(DefineConstants) -unsafe $(AllowUnsafeBlocks)" />
+  </Target>
+</Project>
