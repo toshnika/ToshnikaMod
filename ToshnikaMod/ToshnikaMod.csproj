@@ -22,6 +22,15 @@
     <Folder Include="Projectiles\" />
     <Folder Include="Items\Weapons\Melee\" />
     <Folder Include="Items\Weapons\Magic\" />
+    <Folder Include="Items\Weapons\Summon\" />
+    <Folder Include="Projectiles\Minions\" />
+    <Folder Include="Items\Weapons\Thrown\" />
+    <Folder Include="Items\Equips\Armors\" />
+    <Folder Include="Buffs\" />
+    <Folder Include="Items\Equips\Armors\Grotto\" />
+    <Folder Include="Items\GrabBags\" />
+    <Folder Include="Items\Equips\Wings\" />
+    <Folder Include="Items\Equips\Armors\Hellfire\" />
   </ItemGroup>
   <Target Name="BuildMod" AfterTargets="Build">
     <Exec Command="&quot;$(tMLBuildServerPath)&quot; -build $(ProjectDir) -eac $(TargetPath) -define $(DefineConstants) -unsafe $(AllowUnsafeBlocks)" />

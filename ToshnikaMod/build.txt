@@ -1,3 +1,5 @@
 displayName = Toshnika's Random Content
 author = Toshnika
-version = 0.1
+version = 0.4.2
+homepage = https://discord.gg/tf64gQX
+buildIgnore = *.csproj, *.user, obj\*, bin\*, .vs\*

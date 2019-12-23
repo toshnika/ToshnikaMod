@@ -2,8 +2,46 @@ This is a work in progress content mod. Its purpose is to add random cool and un
 
 Content at present:
 New Early Hardmode Dash Accessory
-Prism Cave Biome, and a few associated mobs and items
-
-
+Grotto Armor (Early Hardmode General)
+Hellfire Armor (Early Hardmode Throwing)
+Prism Cave Biome, Generates After Killing a Mech Boss
+Prism Weapons
+Prism Cave Fishing Content (partial)
+An Early Hardmode Accessory For Each Class
+Two Cross Immunity Accessories, One in Earlygame, One Post Mechs
+Other Cool Accessories
 
 Planned Content:
+More Unique Accessories, More Evenly Spread Through The Game
+A New Ocean Boss
+More Cool Random Items
+
+Changelogs:
+
+
+--Alpha--
+---Alpha phase is devoted to adding new content and testing---
+0.4.1
+Bugfixes
+0.4.1
+Added Discord
+0.4
+More Critical Bugfixes :|
+Added More Throwing Stuff to Early Hardmode
+New Accessories
+	Shield of Resilience
+		Ankh Shield Upgrade With Various Cool Effects
+	Thermal Wings
+		Decent Post-Golem Expert Wings
+
+0.3.1
+Critical Bugfixes
+Added Prism Crate Loot
+0.3
+Added Basic Prism Cave Fishing
+Added Grotto Armor
+Minor Additions and Tweaks
+0.2
+Finished Adding Prism Weapons
+Added a Lot of New Accessories
+Bugfixes and Tweaks
