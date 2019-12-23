@@ -12,7 +12,7 @@ namespace ToshnikaMod.Items.Weapons.Magic
         }
         public override void SetDefaults()
         {
-            item.damage = 85;
+            item.damage = 100;
             item.magic = true;
             item.mana = 20;
             item.width = 40;
@@ -21,7 +21,7 @@ namespace ToshnikaMod.Items.Weapons.Magic
             item.useAnimation = 45;
             item.useStyle = 5;
             item.knockBack = 5;
-            item.value = 0;
+            item.value = Item.buyPrice(0, 10, 0, 0);
             item.rare = 5;
             item.shootSpeed = 12;
             item.shoot = mod.ProjectileType("PrismZap");

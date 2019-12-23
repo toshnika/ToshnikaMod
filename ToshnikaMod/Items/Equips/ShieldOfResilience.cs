@@ -1,58 +1,74 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.Graphics.Shaders;
 using Terraria.ID;
 using Terraria.ModLoader;
 
+
 namespace ToshnikaMod.Items.Equips
 {
-    public class CrystalOrb : ModItem
+    [AutoloadEquip(EquipType.Shield)]
+    public class ShieldOfResilience : ModItem
     {
         public override void SetStaticDefaults()
         {
-            Tooltip.SetDefault("Grants a short range, high speed crystal dash \nYou leave damaging crystal shards after dashing\nBeing hit gives you the 'shattered crystal' debuff\nThis debuff removes the crystal shards from your dash, and reduces your life regen by 1");
-
-
+            Tooltip.SetDefault("Immune to knockback and many debuffs\nYou can dash\nBoosted defense and regen below 66% life\nReduces damage taken by projectiles, even more so while standing still");
         }
 
         public override void SetDefaults()
         {
-
-            item.value = 100000;
-            item.rare = 5;
-            item.width = 32;
-            item.height = 28;
+            item.defense = 12;
+            item.width = 24;
+            item.height = 24;
+            item.value = Item.buyPrice(1, 80, 0, 0);
+            item.rare = 7;
             item.accessory = true;
-            item.value = Item.buyPrice(0, 8, 0, 0);
 
         }
 
-        public override void UpdateEquip(Player player)
+        public override void UpdateAccessory(Player player, bool hideVisual)
         {
-            var modPlayer = player.GetModPlayer<CDashPlayer>();
-            modPlayer.dashC = true;
+            player.buffImmune[BuffID.Chilled] = true;
+            player.buffImmune[BuffID.Ichor] = true;
+            player.buffImmune[BuffID.CursedInferno] = true;
+            player.buffImmune[BuffID.Cursed] = true;
+            player.buffImmune[BuffID.Frozen] = true;
+            player.buffImmune[BuffID.Slow] = true;
+            player.buffImmune[BuffID.Confused] = true;
+            player.buffImmune[BuffID.Silenced] = true;
+            player.buffImmune[BuffID.Poisoned] = true;
+            player.buffImmune[BuffID.Bleeding] = true;
+            player.buffImmune[BuffID.OnFire] = true;
+            player.buffImmune[BuffID.Darkness] = true;
+            player.buffImmune[BuffID.BrokenArmor] = true;
+            player.buffImmune[BuffID.Weak] = true;
+            player.noKnockback = true;
 
+            var modPlayer = player.GetModPlayer<SORPlayer>();
+            modPlayer.dashS = true;
         }
         public override void AddRecipes()
         {
-            ModRecipe recipe = new ModRecipe(mod);
-            recipe.AddIngredient(ItemID.PearlstoneBlock, 10);
-            recipe.AddIngredient(ItemID.CrystalShard, 15);
-            recipe.AddIngredient(ItemID.Glass, 5);
+            ModRecipe
+            recipe = new ModRecipe(mod);
+            recipe.AddIngredient(ItemID.AnkhShield);
+            recipe.AddIngredient(ItemID.LihzahrdBrick, 8);
+            recipe.AddIngredient(mod.ItemType("CrystalOrb"));
+            recipe.AddIngredient(mod.ItemType("MotherOfPearl"), 10);
+            recipe.AddIngredient(mod.ItemType("MagicShard"), 2);
             recipe.AddTile(TileID.MythrilAnvil);
             recipe.SetResult(this);
             recipe.AddRecipe();
         }
+
+
     }
-    public class CDashPlayer : ModPlayer
+    public class SORPlayer : ModPlayer
     {
         public float customDashSpeed = 0;
         public float customDashBonusSpeed = 0;
-        public bool dashC = false; 
+        public bool dashS = false;
         public bool grottoSet = false;
 
         public override void ResetEffects()
@@ -60,46 +76,34 @@ namespace ToshnikaMod.Items.Equips
             customDashSpeed = 0;
             customDashBonusSpeed = 0;
             grottoSet = false;
-            dashC = false;
-        }
-        public override void OnHitByNPC(NPC npc, int damage, bool crit)
-        {
-            if (dashC) 
-            {
-                if (grottoSet)
-                {
-                    player.AddBuff(mod.BuffType("ShatteredCrystal"), 180);
-
-                }
-                else
-                {
-                    player.AddBuff(mod.BuffType("ShatteredCrystal"), 300);
-                } 
-                }
+            dashS = false;
         }
         public override void OnHitByProjectile(Projectile proj, int damage, bool crit)
         {
-
-            if (dashC)
+            if (dashS) 
             {
-                if (grottoSet)
+                if (player.velocity.X == 0f && player.velocity.Y == 0f)
                 {
-                    player.AddBuff(mod.BuffType("ShatteredCrystal"), 180);
-
+                    player.statLife += damage / 4;
                 }
                 else
                 {
-                    player.AddBuff(mod.BuffType("ShatteredCrystal"), 300);
+                    player.statLife += damage / 10;
                 }
             }
         }
         public override void PostUpdateEquips()
         {
-            if (dashC == true)
+            if (dashS == true)
             {
+                if (player.statLife < player.statLifeMax2 * 0.66f)
+                {
+                    player.lifeRegen += 4;
+                    player.statDefense += 40;
+                }
                 if (player.dash <= 0 && player.dashDelay == 0 && !player.mount.Active)
                 {
-                    
+
                     int num21 = 0;
                     bool flag2 = false;
                     if (player.dashTime > 0)
@@ -134,9 +138,9 @@ namespace ToshnikaMod.Items.Equips
                         }
                     }
 
-                    if (flag2 && !grottoSet)
+                    if (flag2)
                     {
-                        player.velocity.X = 18f * num21;
+                        player.velocity.X = 21f * num21;
                         Point point3 = (player.Center + new Vector2(num21 * player.width / 2 + 2, player.gravDir * -(float)player.height / 2f + player.gravDir * 2f)).ToTileCoordinates();
                         Point point4 = (player.Center + new Vector2(num21 * player.width / 2 + 2, 0f)).ToTileCoordinates();
                         if (WorldGen.SolidOrSlopedTile(point3.X, point3.Y) || WorldGen.SolidOrSlopedTile(point4.X, point4.Y))
@@ -144,41 +148,6 @@ namespace ToshnikaMod.Items.Equips
                             player.velocity.X = player.velocity.X / 2f;
                         }
                         player.dashDelay = -1;
-                        for (int num22 = 0; num22 < 100; num22++)
-                        {
-                            if (!player.HasBuff(mod.BuffType("ShatteredCrystal"))) 
-                            {
-                                if (Main.rand.NextBool(30)) 
-                                {
-                                    Projectile.NewProjectile(player.Center.X, player.Center.Y, SpeedX: 0, SpeedY: 0, Type: ProjectileID.CrystalStorm, Damage: 12, KnockBack: 1f, Main.myPlayer);
-                                    Projectile.NewProjectile(player.Center.X, player.Center.Y + 1, SpeedX: 0, SpeedY: 0, Type: ProjectileID.CrystalStorm, Damage: 15, KnockBack: 1f, Main.myPlayer);
-                                    Projectile.NewProjectile(player.Center.X, player.Center.Y - 1, SpeedX: 0, SpeedY: 0, Type: ProjectileID.CrystalStorm, Damage: 15, KnockBack: 1f, Main.myPlayer);
-                                } 
-                            }
-                        }
-                    }
-                    if (flag2 && grottoSet)
-                    {
-                        player.velocity.X = 20f * num21;
-                        Point point3 = (player.Center + new Vector2(num21 * player.width / 2 + 2, player.gravDir * -(float)player.height / 2f + player.gravDir * 2f)).ToTileCoordinates();
-                        Point point4 = (player.Center + new Vector2(num21 * player.width / 2 + 2, 0f)).ToTileCoordinates();
-                        if (WorldGen.SolidOrSlopedTile(point3.X, point3.Y) || WorldGen.SolidOrSlopedTile(point4.X, point4.Y))
-                        {
-                            player.velocity.X = player.velocity.X / 2f;
-                        }
-                        player.dashDelay = -1;
-                        for (int num22 = 0; num22 < 100; num22++)
-                        {
-                            if (!player.HasBuff(mod.BuffType("ShatteredCrystal")))
-                            {
-                                if (Main.rand.NextBool(30))
-                                {
-                                    Projectile.NewProjectile(player.Center.X, player.Center.Y, SpeedX: 0, SpeedY: 0, Type: ProjectileID.CrystalStorm, Damage: 12, KnockBack: 1f, Main.myPlayer);
-                                    Projectile.NewProjectile(player.Center.X, player.Center.Y + 1, SpeedX: 0, SpeedY: 0, Type: ProjectileID.CrystalStorm, Damage: 15, KnockBack: 1f, Main.myPlayer);
-                                    Projectile.NewProjectile(player.Center.X, player.Center.Y - 1, SpeedX: 0, SpeedY: 0, Type: ProjectileID.CrystalStorm, Damage: 15, KnockBack: 1f, Main.myPlayer);
-                                }
-                            }
-                        }
                     }
                 }
                 if (player.dashDelay < 0)
@@ -212,7 +181,7 @@ namespace ToshnikaMod.Items.Equips
                         player.velocity.X = player.velocity.X * 0.94f;
                         return;
                     }
-                    player.dashDelay = 60;
+                    player.dashDelay = 48;
                     if (player.velocity.X < 0f)
                     {
                         player.velocity.X = -maxSpeed;
@@ -227,4 +196,3 @@ namespace ToshnikaMod.Items.Equips
         }
     }
 }
-    

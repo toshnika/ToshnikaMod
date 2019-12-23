@@ -21,7 +21,7 @@ namespace ToshnikaMod.Items.Weapons.Melee
             item.useAnimation = 20;
             item.useStyle = 1;
             item.knockBack = 3;
-            item.value = 0;
+            item.value = Item.buyPrice(0, 0, 30, 0);
             item.rare = 5;
             item.shootSpeed = 5;
             item.UseSound = SoundID.Item1;
