@@ -34,6 +34,10 @@ namespace ToshnikaMod.Items.Equips.Armors.Hellfire
             var modPlayer = player.GetModPlayer<ToshnikaPlayer>();
             modPlayer.HFSkeleton = true;
         }
+        public override bool DrawBody()
+        {
+            return base.DrawBody();
+        }
         public override bool IsArmorSet(Item head, Item body, Item legs)
         {
 

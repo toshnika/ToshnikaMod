@@ -21,10 +21,19 @@ namespace ToshnikaMod.Items.Materials
         }
         public override void AddRecipes()
         {
-            ModRecipe recipe = new ModRecipe(mod);
+            ModRecipe 
+            recipe = new ModRecipe(mod);
             recipe.AddIngredient(mod.ItemType("SpectrumPrism"));
             recipe.AddIngredient(ItemID.CrystalShard, 2);
-            recipe.AddIngredient(ItemID.LivingFireBlock);
+            recipe.AddIngredient(ItemID.LivingFireBlock, 2);
+            recipe.AddTile(TileID.Hellforge);
+            recipe.SetResult(this);
+            recipe.AddRecipe();
+
+            recipe = new ModRecipe(mod);
+            recipe.AddIngredient(mod.ItemType("SpectrumPrism"));
+            recipe.AddIngredient(ItemID.CrystalShard, 2);
+            recipe.AddIngredient(mod.ItemType("FeroziumBar"));
             recipe.AddTile(TileID.Hellforge);
             recipe.SetResult(this);
             recipe.AddRecipe();

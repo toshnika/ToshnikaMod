@@ -27,6 +27,11 @@ namespace ToshnikaMod.Items.Equips.Armors.Hellfire
             player.thrownCost33 = true;
         }
 
+        public override bool DrawLegs()
+        {
+            return base.DrawLegs();
+        }
+
         public override void AddRecipes()
         {
             ModRecipe recipe = new ModRecipe(mod);
